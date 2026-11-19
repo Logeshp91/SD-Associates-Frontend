@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SD Associates - Vehicle Finance & Loan CRM</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">SD Associates</h1>
+          <p class="brand-subtitle" id="brandSubtitle">Vehicle Loan & Finance CRM</p>
+        </div>
+      </div>
+
+      <!-- CRM Module Switcher Tabs -->
+      <div class="crm-module-switcher">
+        <button id="btnSwitchFinance" class="btn-crm-tab active" type="button" title="Switch to Vehicle Loan CRM">
+          <span class="tab-icon">🚗</span>
+          <span>Vehicle Loan CRM</span>
+        </button>
+        <button id="btnSwitchInsurance" class="btn-crm-tab" type="button" title="Switch to Insurance CRM">
+          <span class="tab-icon">🛡️</span>
+          <span>Insurance CRM</span>
+          <span id="insuranceNavBadge" class="nav-alert-badge hidden" title="Policies expiring in ≤ 10 days">0</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Header Actions -->
+      <div class="header-actions">
+        <!-- Vehicle Loan Actions -->
+        <div id="financeHeaderActions" class="header-actions-group">
+          <button id="btnOpenDownloadModal" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Reports
+          </button>
+          <button id="btnOpenNewLead" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            New Lead Entry
+          </button>
+        </div>
+
+        <!-- Insurance Actions -->
+        <div id="insuranceHeaderActions" class="header-actions-group hidden">
+          <button id="btnOpenInsuranceDownload" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Reports
+          </button>
+          <button id="btnOpenNewInsurance" class="btn btn-primary" style="background-color: #16a34a; border-color: #15803d;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            New Insurance Entry
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    
+    <!-- ============================================== -->
+    <!-- VEHICLE LOAN CRM VIEW                          -->
+    <!-- ============================================== -->
+    <div id="financeCrmView">
+      
+      <!-- Metrics & Statistics Bar -->
+      <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-label">Total Leads</div>
+          <div class="stat-value" id="statTotalLeads">0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-amber">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-label">In Process / Logged In</div>
+          <div class="stat-value" id="statInProcess">0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-purple">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-label">Approved</div>
+          <div class="stat-value" id="statApproved">0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-label">Disbursed</div>
+          <div class="stat-value" id="statDisbursed">0</div>
+          <span class="stat-sub" id="statDisbursedVolume">₹0</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon-indigo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <line x1="6" y1="12" x2="18" y2="12"></line>
+          </svg>
+        </div>
+        <div>
+          <div class="stat-label">Total Loan Pipeline</div>
+          <div class="stat-value" id="statTotalVolume">₹0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter & Search Toolbar -->
+    <section class="toolbar-card">
+      <div class="search-input-wrapper">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search by customer name, phone, serial number, vehicle number, model, reference, finance..." class="search-input">
+        <button id="btnClearSearch" class="btn-clear hidden" title="Clear search">&times;</button>
+      </div>
+
+      <div class="filters-row">
+        <!-- Status Tabs -->
+        <div class="status-tabs" id="statusTabs">
+          <button class="tab active" data-status="All">All Leads</button>
+          <button class="tab" data-status="Logged In">Logged In</button>
+          <button class="tab" data-status="In Process">In Process</button>
+          <button class="tab" data-status="Approved">Approved</button>
+          <button class="tab" data-status="Disbursed">Disbursed</button>
+          <button class="tab" data-status="Rejected">Rejected</button>
+        </div>
+
+        <div class="filter-dropdowns">
+          <select id="filterDisbursedMonth" class="select-filter font-semibold" style="color: #15803d; border-color: #bbf7d0; background-color: #f0fdf4;" title="Filter leads by Disbursed Date month">
+            <option value="All">All Disbursed Months</option>
+          </select>
+
+          <select id="filterLoanType" class="select-filter">
+            <option value="All">All Loan Types</option>
+            <option value="New Car">New Car</option>
+            <option value="Used Car">Used Car</option>
+            <option value="Refinance">Refinance</option>
+          </select>
+
+          <select id="filterFinance" class="select-filter">
+            <option value="All">All Finance Companies</option>
+          </select>
+
+          <button id="btnResetFilters" class="btn btn-outline btn-sm" title="Reset all filters">
+            Reset
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leads Table / Details View Section -->
+    <section class="table-card">
+      <div class="table-header-row">
+        <div class="table-title">
+          <h2>Leads Directory</h2>
+          <span class="count-badge" id="leadsCountBadge">0 leads</span>
+        </div>
+        <div class="table-actions">
+          <button id="btnQuickDownloadFiltered" class="btn btn-outline btn-sm" title="Download currently displayed leads as CSV">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Table (<span id="downloadTableCount">0</span>)
+          </button>
+          <span class="text-muted" id="lastUpdatedTime">Updated just now</span>
+          <button id="btnRefresh" class="btn-icon" title="Refresh Table">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="leads-table" id="leadsTable">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Sl. No</th>
+              <th>Customer Details</th>
+              <th>Loan Type</th>
+              <th>Loan Amount</th>
+              <th>Vehicle Details</th>
+              <th>Reference Given By</th>
+              <th>Finance (Lead Given To)</th>
+              <th>Login Date</th>
+              <th>Disbursed Amount</th>
+              <th>Disbursed Date</th>
+              <th>Status</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leadsTableBody">
+            <!-- Dynamically populated rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <h3>No Leads Found</h3>
+        <p class="text-muted">Start by adding your first lead entry or adjust your search filter.</p>
+        <button id="btnEmptyAddLead" class="btn btn-primary" style="margin-top: 1rem;">
+          + Enter First Lead
+        </button>
+      </div>
+    </section>
+    </div><!-- /#financeCrmView -->
+
+    <!-- ============================================== -->
+    <!-- INSURANCE CRM VIEW                             -->
+    <!-- ============================================== -->
+    <div id="insuranceCrmView" class="hidden">
+
+      <!-- Critical Expiry Alert Banner (0 to 10 Days Remaining) -->
+      <div id="insuranceExpiryAlertBanner" class="expiry-alert-banner hidden">
+        <div class="banner-icon-pulse">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <div class="banner-body">
+          <div class="banner-title">
+            ⚠️ <strong>CRITICAL EXPIRY ALERT:</strong> <span id="bannerExpiringCount">0</span> Customer(s) Have Insurance Expiring Within 10 Days!
+          </div>
+          <div class="banner-sub">
+            Follow up immediately with customer details to complete policy renewals before expiry.
+          </div>
+        </div>
+      </div>
+
+      <!-- Insurance Metrics & Statistics Bar -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-label">Total Policies</div>
+            <div class="stat-value" id="statTotalInsurance">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-alert" id="cardExpiringSoonInsurance">
+          <div class="stat-icon stat-icon-red">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-label" style="color: #b91c1c; font-weight: 700;">Expiring in ≤ 10 Days</div>
+            <div class="stat-value text-danger font-bold" id="statExpiringSoonInsurance">0</div>
+            <span class="stat-sub text-danger font-semibold">Renewal Alert Zone</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-amber">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-label">Expired Policies</div>
+            <div class="stat-value" id="statExpiredInsurance">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-label">Active Policies</div>
+            <div class="stat-value" id="statActiveInsurance">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-label">Total Premium Booked</div>
+            <div class="stat-value" id="statTotalPremium">₹0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-indigo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <line x1="6" y1="12" x2="18" y2="12"></line>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-label">Total IDV Coverage</div>
+            <div class="stat-value" id="statTotalIdv">₹0</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Insurance Filter & Search Toolbar -->
+      <section class="toolbar-card">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="insuranceSearchInput" placeholder="Search by customer name, mobile, serial number, vehicle number, model, policy no, company..." class="search-input">
+          <button id="btnClearInsuranceSearch" class="btn-clear hidden" title="Clear search">&times;</button>
+        </div>
+
+        <div class="filters-row">
+          <!-- Status Tabs -->
+          <div class="status-tabs" id="insuranceStatusTabs">
+            <button class="tab active" data-status="All">All Policies</button>
+            <button class="tab tab-urgent-alert" data-status="Expiring Soon">
+              ⚠️ Expiring in ≤ 10 Days
+              <span id="tabExpiringCountBadge" class="tab-pill-badge hidden">0</span>
+            </button>
+            <button class="tab" data-status="Active">Active</button>
+            <button class="tab" data-status="Expired">Expired</button>
+            <button class="tab" data-status="Renewed">Renewed</button>
+          </div>
+
+          <div class="filter-dropdowns">
+            <select id="filterInsuranceCompany" class="select-filter font-semibold" title="Filter by Insurance Company">
+              <option value="All">All Insurance Companies</option>
+            </select>
+
+            <select id="filterInsuranceType" class="select-filter" title="Filter by Policy Type">
+              <option value="All">All Policy Types</option>
+              <option value="Comprehensive">Comprehensive</option>
+              <option value="Zero Depreciation">Zero Depreciation</option>
+              <option value="Third Party">Third Party</option>
+              <option value="Own Damage">Own Damage</option>
+              <option value="New Car Insurance">New Car Insurance</option>
+              <option value="Used Car Insurance">Used Car Insurance</option>
+              <option value="Refinance Insurance">Refinance Insurance</option>
+            </select>
+
+            <input type="month" id="filterInsuranceExpiryMonth" class="select-filter" title="Filter by Expiry Month" style="min-width: 150px;">
+
+            <button id="btnResetInsuranceFilters" class="btn btn-outline btn-sm" title="Reset all filters">
+              Reset
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Insurance Directory Table -->
+      <section class="table-card">
+        <div class="table-header-row">
+          <div class="table-title">
+            <h2>Insurance Directory & Expiry Alert Tracker</h2>
+            <span class="count-badge" id="insuranceCountBadge">0 policies</span>
+          </div>
+          <div class="table-actions">
+            <button id="btnQuickDownloadInsuranceFiltered" class="btn btn-outline btn-sm" title="Download currently displayed insurance policies as CSV">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download Table (<span id="downloadInsuranceTableCount">0</span>)
+            </button>
+            <span class="text-muted" id="insuranceLastUpdatedTime">Updated just now</span>
+            <button id="btnRefreshInsurance" class="btn-icon" title="Refresh Table">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="leads-table insurance-table" id="insuranceTable">
+            <thead>
+              <tr>
+                <th style="width: 50px;">Sl. No</th>
+                <th>Customer Details</th>
+                <th>Loan / Policy Type</th>
+                <th>Vehicle Details</th>
+                <th>IDV Value</th>
+                <th>Premium Amount</th>
+                <th>Insurance Period</th>
+                <th>Expiry Alert / Days Left</th>
+                <th>Insurance Company</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="insuranceTableBody">
+              <!-- Dynamically populated rows with RED highlight when days <= 10 -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state hidden" id="insuranceEmptyState">
+          <div class="empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h3>No Insurance Policies Found</h3>
+          <p class="text-muted">Start by adding your first insurance entry or adjust your search filter.</p>
+          <button id="btnEmptyAddInsurance" class="btn btn-primary" style="margin-top: 1rem; background-color: #16a34a; border-color: #15803d;">
+            + Enter First Insurance Policy
+          </button>
+        </div>
+      </section>
+
+    </div><!-- /#insuranceCrmView -->
+
+  </main>
+
+  <!-- ============================================== -->
+  <!-- LEAD ENTRY / EDIT MODAL (Re-entry Form)       -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="leadFormModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="formModalTitle">New Lead Entry Form</h3>
+          <p class="modal-subtitle" id="formModalSubtitle">Fill in customer and vehicle finance details</p>
+        </div>
+        <button class="modal-close" id="btnCloseFormModal">&times;</button>
+      </div>
+
+      <!-- Re-entry banner shown during edit mode -->
+      <div class="edit-mode-banner hidden" id="editModeBanner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+        <span><strong>Re-entry / Edit Mode:</strong> Modifying existing lead details. Save to update records.</span>
+      </div>
+
+      <form id="leadForm" novalidate>
+        <input type="hidden" id="leadId" value="">
+
+        <div class="form-grid">
+          <!-- 1. Sl. No -->
+          <div class="form-group">
+            <label for="serialNo" class="form-label">
+              1. Sl. No <span class="required">*</span>
+            </label>
+            <div class="input-with-button">
+              <input type="number" id="serialNo" class="form-control" placeholder="1" min="1" required>
+              <button type="button" id="btnAutoSerial" class="btn-secondary btn-sm" title="Generate Next Sl. Number">
+                Auto
+              </button>
+            </div>
+            <span class="form-hint">Sequential number (1, 2, 3...)</span>
+          </div>
+
+          <!-- 2. Customer Name -->
+          <div class="form-group">
+            <label for="customerName" class="form-label">
+              2. Customer Name <span class="required">*</span>
+            </label>
+            <input type="text" id="customerName" class="form-control" placeholder="Enter full customer name" required>
+          </div>
+
+          <!-- 3. Mobile Number -->
+          <div class="form-group">
+            <label for="mobileNumber" class="form-label">
+              3. Mobile Number <span class="required">*</span>
+            </label>
+            <input type="tel" id="mobileNumber" class="form-control" placeholder="10-digit mobile number" maxlength="15" required>
+            <span class="form-hint">Direct contact for loan follow-ups</span>
+          </div>
+
+          <!-- 4. Loan Type -->
+          <div class="form-group">
+            <label for="loanType" class="form-label">
+              4. Loan Type <span class="required">*</span>
+            </label>
+            <select id="loanType" class="form-control" required>
+              <option value="New Car">New Car</option>
+              <option value="Used Car">Used Car</option>
+              <option value="Refinance">Refinance</option>
+            </select>
+          </div>
+
+          <!-- 5. Loan Amount -->
+          <div class="form-group">
+            <label for="loanAmount" class="form-label">
+              5. Loan Amount (₹) <span class="required">*</span>
+            </label>
+            <div class="currency-input-wrapper">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="loanAmount" class="form-control pl-prefix" placeholder="e.g. 500000" min="0" step="1000" required>
+            </div>
+            <div class="amount-chips">
+              <span class="chip" data-amt="300000">3 Lakh</span>
+              <span class="chip" data-amt="500000">5 Lakh</span>
+              <span class="chip" data-amt="800000">8 Lakh</span>
+              <span class="chip" data-amt="1000000">10 Lakh</span>
+              <span class="chip" data-amt="1500000">15 Lakh</span>
+            </div>
+          </div>
+
+          <!-- 6. Vehicle Number -->
+          <div class="form-group">
+            <label for="vehicleNumber" class="form-label">
+              6. Vehicle Number
+            </label>
+            <input type="text" id="vehicleNumber" class="form-control uppercase" placeholder="e.g. TN 09 BK 4321 or New">
+            <span class="form-hint">Reg. number or enter "NEW" for un-registered</span>
+          </div>
+
+          <!-- 7. Vehicle Model -->
+          <div class="form-group">
+            <label for="model" class="form-label">
+              7. Vehicle Model <span class="required">*</span>
+            </label>
+            <input type="text" id="model" class="form-control" placeholder="e.g. Maruti Swift, Hyundai Creta, Mahindra Thar" required>
+          </div>
+
+          <!-- 8. Vehicle Variant -->
+          <div class="form-group">
+            <label for="variant" class="form-label">
+              8. Variant
+            </label>
+            <input type="text" id="variant" class="form-control" placeholder="e.g. VXI, ZXI Plus, SX(O), Diesel AT">
+          </div>
+
+          <!-- 9. Reference Given By -->
+          <div class="form-group">
+            <label for="referenceBy" class="form-label">
+              9. Reference Given By
+            </label>
+            <input type="text" id="referenceBy" class="form-control" placeholder="e.g. Self, Dealer Ganesh, Direct Customer, Friend">
+            <span class="form-hint">Source or person who referred this customer</span>
+          </div>
+
+          <!-- 10. Which Finance I Given The Lead -->
+          <div class="form-group">
+            <label for="financeName" class="form-label">
+              10. Which Finance I Given The Lead <span class="required">*</span>
+            </label>
+            <input type="text" id="financeName" list="financeSuggestions" class="form-control" placeholder="e.g. HDFC Bank, Sundaram, Chola..." required>
+            <datalist id="financeSuggestions">
+              <option value="HDFC Bank"></option>
+              <option value="ICICI Bank"></option>
+              <option value="Kotak Mahindra Bank"></option>
+              <option value="Axis Bank"></option>
+              <option value="Sundaram Finance"></option>
+              <option value="Cholamandalam Investment"></option>
+              <option value="Tata Capital"></option>
+              <option value="Mahindra Finance"></option>
+              <option value="IndusInd Bank"></option>
+              <option value="Bajaj Finserv"></option>
+              <option value="AU Small Finance Bank"></option>
+              <option value="KVR Finance"></option>
+              <option value="Shriram Finance"></option>
+              <option value="Hero Fincorp"></option>
+            </datalist>
+            <span class="form-hint">Bank or NBFC where file is submitted</span>
+          </div>
+
+          <!-- 11. Login Date -->
+          <div class="form-group">
+            <label for="loginDate" class="form-label">
+              11. Login Date <span class="required">*</span>
+            </label>
+            <input type="date" id="loginDate" class="form-control" required>
+            <span class="form-hint">Date when file was logged into the finance company</span>
+          </div>
+
+          <!-- 12. Status -->
+          <div class="form-group">
+            <label for="status" class="form-label">
+              12. Status <span class="required">*</span>
+            </label>
+            <select id="status" class="form-control" required>
+              <option value="Logged In">Logged In</option>
+              <option value="In Process">In Process</option>
+              <option value="Documents Pending">Documents Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Disbursed">Disbursed</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <!-- CONDITIONAL DISBURSED SECTION (Triggered when Status = Disbursed) -->
+          <div class="form-group-full disbursed-card hidden" id="disbursedSection">
+            <div class="disbursed-card-header">
+              <div class="disbursed-badge">Status: Disbursed</div>
+              <h4>Disbursement Details</h4>
+              <p class="text-muted" style="margin: 0; font-size: 11px;">Fill in the disbursement, RTO, seller, and UTR details below</p>
+            </div>
+
+            <div class="form-grid" style="margin-top: 12px;">
+              <!-- 1. Disbursed Amount (Left) -->
+              <div class="form-group">
+                <label for="disbursedAmount" class="form-label">
+                  Disbursed Amount (₹) <span class="required">*</span>
+                </label>
+                <div class="currency-input-wrapper">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="disbursedAmount" class="form-control pl-prefix" placeholder="Final disbursed amount">
+                </div>
+              </div>
+
+              <!-- 2. Disbursed Date (Right) -->
+              <div class="form-group">
+                <label for="disbursedDate" class="form-label">
+                  Disbursed Date <span class="required">*</span>
+                </label>
+                <input type="date" id="disbursedDate" class="form-control">
+              </div>
+
+              <!-- 3. RTO Name / Office (Left) -->
+              <div class="form-group">
+                <label for="rtoName" class="form-label">
+                  RTO Name / Office
+                </label>
+                <input type="text" id="rtoName" class="form-control" placeholder="e.g. Chennai Central / RTO Agent">
+              </div>
+
+              <!-- 4. RTO Amount (₹) (Right) -->
+              <div class="form-group">
+                <label for="rtoAmount" class="form-label">
+                  RTO Amount (₹)
+                </label>
+                <div class="currency-input-wrapper">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="rtoAmount" class="form-control pl-prefix" placeholder="e.g. 1500" min="0">
+                </div>
+              </div>
+
+              <!-- 5. Seller Name / Dealer (Left) -->
+              <div class="form-group">
+                <label for="sellerName" class="form-label">
+                  Seller Name / Dealer
+                </label>
+                <input type="text" id="sellerName" class="form-control" placeholder="e.g. Dealer Name or Vehicle Owner">
+              </div>
+
+              <!-- 6. Seller Amount (₹) (Right) -->
+              <div class="form-group">
+                <label for="sellerAmount" class="form-label">
+                  Seller Amount (₹)
+                </label>
+                <div class="currency-input-wrapper">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="sellerAmount" class="form-control pl-prefix" placeholder="e.g. 485000" min="0">
+                </div>
+              </div>
+
+              <!-- 7. UTR No / Ref No (Left) -->
+              <div class="form-group">
+                <label for="utrNo" class="form-label">
+                  UTR No / Ref No
+                </label>
+                <input type="text" id="utrNo" class="form-control" placeholder="e.g. UTR / Bank Transfer Ref">
+              </div>
+
+              <!-- 8. Seller Date (Right) -->
+              <div class="form-group">
+                <label for="sellerDate" class="form-label">
+                  Seller Date
+                </label>
+                <input type="date" id="sellerDate" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <!-- Remarks / Notes -->
+          <div class="form-group form-group-full">
+            <label for="notes" class="form-label">
+              Additional Remarks / Follow-up Notes
+            </label>
+            <textarea id="notes" class="form-control" rows="2" placeholder="Add any notes on credit check, co-applicant, dealer payout, or follow-up status..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnCancelForm">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveLead">
+            <span id="saveBtnText">Save Lead Entry</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- VIEW DETAILS MODAL                            -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="viewDetailsModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <div>
+          <div class="view-header-badge" id="viewStatusBadge">Logged In</div>
+          <h3 class="modal-title" id="viewCustomerName">Customer Details</h3>
+          <p class="modal-subtitle" id="viewSerialNo">Serial No: SD-001</p>
+        </div>
+        <button class="modal-close" id="btnCloseViewModal">&times;</button>
+      </div>
+
+      <!-- Quick Action Bar -->
+      <div class="quick-actions-bar">
+        <a id="btnQuickCall" href="#" class="btn-action btn-call" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+          Call Customer
+        </a>
+
+        <a id="btnQuickWhatsapp" href="#" class="btn-action btn-whatsapp" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+          WhatsApp
+        </a>
+
+        <button id="btnEditFromView" class="btn-action btn-edit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          Edit / Re-entry
+        </button>
+
+        <button id="btnPrintSlip" class="btn-action btn-print">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print Slip
+        </button>
+      </div>
+
+      <div class="view-grid">
+        <!-- Loan Information Section -->
+        <div class="view-section">
+          <h4 class="view-section-title">Loan & Finance Summary</h4>
+          <div class="detail-item">
+            <span class="detail-label">Loan Type:</span>
+            <span class="detail-value" id="viewLoanType">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Loan Amount:</span>
+            <span class="detail-value highlight-amount" id="viewLoanAmount">₹0</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Finance Given To:</span>
+            <span class="detail-value font-semibold text-primary" id="viewFinanceName">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Login Date:</span>
+            <span class="detail-value" id="viewLoginDate">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Status:</span>
+            <span class="detail-value" id="viewStatus">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Disbursed Amount:</span>
+            <span class="detail-value font-semibold" style="color: #15803d;" id="viewDisbursedAmount">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Disbursed Date:</span>
+            <span class="detail-value" id="viewDisbursedDate">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">RTO Amount:</span>
+            <span class="detail-value" id="viewRtoAmount">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Seller Amount:</span>
+            <span class="detail-value" id="viewSellerAmount">-</span>
+          </div>
+        </div>
+
+        <!-- Vehicle & Reference Section -->
+        <div class="view-section">
+          <h4 class="view-section-title">Vehicle & Reference</h4>
+          <div class="detail-item">
+            <span class="detail-label">Vehicle Number:</span>
+            <span class="detail-value font-mono" id="viewVehicleNumber">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Model:</span>
+            <span class="detail-value font-semibold" id="viewModel">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Variant:</span>
+            <span class="detail-value" id="viewVariant">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mobile Number:</span>
+            <span class="detail-value" id="viewMobileNumber">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Reference Given By:</span>
+            <span class="detail-value" id="viewReferenceBy">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">RTO Name:</span>
+            <span class="detail-value" id="viewRtoName">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Seller Name:</span>
+            <span class="detail-value" id="viewSellerName">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">UTR No:</span>
+            <span class="detail-value font-mono font-semibold" id="viewUtrNo">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Seller Date:</span>
+            <span class="detail-value" id="viewSellerDate">-</span>
+          </div>
+        </div>
+
+        <!-- Notes / Remarks -->
+        <div class="view-section view-section-full">
+          <h4 class="view-section-title">Notes / Remarks</h4>
+          <p class="detail-notes" id="viewNotes">No remarks added.</p>
+        </div>
+      </div>
+
+      <div class="modal-footer justify-between">
+        <button id="btnDeleteLead" class="btn btn-danger-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          Delete Lead
+        </button>
+
+        <div class="footer-actions">
+          <button class="btn btn-secondary" id="btnCloseViewBottom">Close</button>
+          <button class="btn btn-primary" id="btnEditLeadDirect">Edit Lead</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- DOWNLOAD & EXPORT MODAL                        -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="downloadModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Download Leads Report</h3>
+          <p class="modal-subtitle">Filter and download CSV/Excel file by Status Type and Loan Type</p>
+        </div>
+        <button class="modal-close" id="btnCloseDownloadModal">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.5rem; overflow-y: auto;">
+        <!-- Status Type Filter Selection -->
+        <div class="form-group mb-4">
+          <label class="form-label font-semibold">1. Select Status Type</label>
+          <div class="pill-selector-grid" id="exportStatusOptions">
+            <button type="button" class="pill-option active" data-val="All">All Statuses</button>
+            <button type="button" class="pill-option" data-val="Logged In">Logged In</button>
+            <button type="button" class="pill-option" data-val="In Process">In Process</button>
+            <button type="button" class="pill-option" data-val="Documents Pending">Documents Pending</button>
+            <button type="button" class="pill-option" data-val="Approved">Approved</button>
+            <button type="button" class="pill-option" data-val="Disbursed">Disbursed</button>
+            <button type="button" class="pill-option" data-val="Rejected">Rejected</button>
+            <button type="button" class="pill-option" data-val="Cancelled">Cancelled</button>
+          </div>
+        </div>
+
+        <!-- Loan Type Filter Selection -->
+        <div class="form-group mb-4">
+          <label class="form-label font-semibold">2. Select Loan Type</label>
+          <div class="pill-selector-grid" id="exportLoanTypeOptions">
+            <button type="button" class="pill-option active" data-val="All">All Loan Types</button>
+            <button type="button" class="pill-option" data-val="New Car">New Car</button>
+            <button type="button" class="pill-option" data-val="Used Car">Used Car</button>
+            <button type="button" class="pill-option" data-val="Refinance">Refinance</button>
+          </div>
+        </div>
+
+        <!-- 3. Month-Wise Report By Disbursed Date (Explicit User Request) -->
+        <div class="form-group mb-4" style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <label for="exportDisbursedMonth" class="form-label font-semibold" style="color: #166534; margin: 0;">
+              📅 3. Month-Wise Report (by Disbursed Date)
+            </label>
+            <div style="display: flex; gap: 0.35rem;">
+              <button type="button" class="btn btn-outline btn-sm" id="btnExportThisMonth" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #fff;">This Month</button>
+              <button type="button" class="btn btn-outline btn-sm" id="btnExportAllMonths" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #fff;">All Months</button>
+            </div>
+          </div>
+          <input type="month" id="exportDisbursedMonth" class="form-control" style="background: #ffffff;">
+          <span class="form-hint" style="color: #15803d; font-weight: 500;">
+            ✓ Reports are filtered strictly by <strong>Disbursed Date</strong> (not Login Date).
+          </span>
+        </div>
+
+        <!-- Optional Finance & Custom Date Filters -->
+        <div class="form-grid mb-4">
+          <div class="form-group">
+            <label for="exportFinanceSelect" class="form-label">4. Finance Company (Optional)</label>
+            <select id="exportFinanceSelect" class="form-control">
+              <option value="All">All Finance Companies</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="exportDateRange" class="form-label">5. Custom Date Option</label>
+            <select id="exportDateRange" class="form-control">
+              <option value="all">Any Date / Use Selected Month Above</option>
+              <option value="custom">Custom Disbursed Date Range</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Custom Date Range Row -->
+        <div class="form-grid mb-4 hidden" id="exportCustomDateRow">
+          <div class="form-group">
+            <label for="exportFromDate" class="form-label">From Disbursed Date</label>
+            <input type="date" id="exportFromDate" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="exportToDate" class="form-label">To Disbursed Date</label>
+            <input type="date" id="exportToDate" class="form-control">
+          </div>
+        </div>
+
+        <!-- Live Preview Card -->
+        <div class="export-preview-card">
+          <div class="preview-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span class="font-semibold">Export Summary Preview</span>
+          </div>
+
+          <div class="preview-stats">
+            <div>
+              <span class="text-muted">Matching Leads:</span>
+              <strong id="exportMatchCount" class="preview-number">0</strong>
+            </div>
+            <div>
+              <span class="text-muted">Total Loan Volume:</span>
+              <strong id="exportMatchVolume" class="preview-number text-primary">₹0</strong>
+            </div>
+          </div>
+
+          <div class="preview-filename">
+            <span class="text-muted">Filename:</span>
+            <code id="exportPreviewFilename">SD_Associates_Leads.csv</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer justify-between">
+        <button type="button" class="btn btn-secondary" id="btnCancelDownload">Cancel</button>
+        <div class="footer-actions">
+          <button type="button" class="btn btn-secondary" id="btnExecuteDownload">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CSV / Excel
+          </button>
+          <button type="button" class="btn btn-primary" id="btnExecuteDownloadPdf" style="background-color: #dc2626; border-color: #b91c1c;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Download in PDF (Table Format)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- INSURANCE ENTRY / EDIT MODAL                   -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="insuranceFormModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 40px; height: 40px; border-radius: 8px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="modal-title" id="insuranceFormModalTitle">New Insurance Policy Entry</h3>
+            <p class="modal-subtitle" id="insuranceFormModalSubtitle">Fill in customer, vehicle, IDV, and policy expiry details</p>
+          </div>
+        </div>
+        <button class="modal-close" id="btnCloseInsuranceFormModal">&times;</button>
+      </div>
+
+      <!-- Re-entry banner shown during edit mode -->
+      <div class="edit-mode-banner hidden" id="insuranceEditModeBanner">
+        <div style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: #fef3c7; color: #b45309; border: 1px solid #fde68a; flex-shrink: 0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.15rem;">
+            <span class="edit-mode-badge" style="background:#f59e0b; color:#fff; font-size:0.68rem; font-weight:800; padding:1px 6px; border-radius:999px; text-transform:uppercase;">Re-entry / Edit Mode</span>
+            <strong style="color: #92400e; font-size: 0.88rem;">Updating Existing Policy Record</strong>
+          </div>
+          <span style="font-size: 0.8rem; color: #b45309;">Modifying policy and vehicle details. Save changes to update live expiry tracking.</span>
+        </div>
+      </div>
+
+      <form id="insuranceForm" novalidate>
+        <input type="hidden" id="insuranceId" value="">
+
+        <!-- Card 1: Customer Information & Policy Type -->
+        <div class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-icon" style="background:#e0f2fe; color:#0284c7;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <h4 class="form-card-title">1. Customer Information & Policy Type</h4>
+            <span class="form-card-subtitle">Primary Contact Details</span>
+          </div>
+
+          <div class="form-grid">
+            <!-- 1. Sl. No -->
+            <div class="form-group">
+              <label for="insuranceSerialNo" class="form-label">
+                1. Sl. No <span class="required">*</span>
+              </label>
+              <div class="input-with-button">
+                <input type="number" id="insuranceSerialNo" class="form-control" placeholder="1" min="1" required>
+                <button type="button" id="btnAutoInsuranceSerial" class="btn-secondary btn-sm" title="Generate Next Sl. Number">
+                  Auto
+                </button>
+              </div>
+              <span class="form-hint">Sequential number (1, 2, 3...)</span>
+            </div>
+
+            <!-- 2. Customer Name -->
+            <div class="form-group">
+              <label for="insuranceCustomerName" class="form-label">
+                2. Customer Name <span class="required">*</span>
+              </label>
+              <input type="text" id="insuranceCustomerName" class="form-control" placeholder="Enter customer full name" required>
+              <span class="form-error hidden" id="errInsuranceCustomerName">Customer name is required</span>
+            </div>
+
+            <!-- 3. Mobile Number -->
+            <div class="form-group">
+              <label for="insuranceMobileNumber" class="form-label">
+                3. Mobile Number <span class="required">*</span>
+              </label>
+              <div class="currency-input-wrapper">
+                <span class="phone-prefix">+91</span>
+                <input type="tel" id="insuranceMobileNumber" class="form-control pl-phone" placeholder="10-digit mobile number" maxlength="10" required>
+              </div>
+              <span class="form-hint">Direct number for WhatsApp & renewal calls</span>
+              <span class="form-error hidden" id="errInsuranceMobileNumber">Enter a valid 10-digit mobile number</span>
+            </div>
+
+            <!-- 4. Policy / Loan Type -->
+            <div class="form-group">
+              <label for="insuranceLoanType" class="form-label">
+                4. Policy / Loan Type <span class="required">*</span>
+              </label>
+              <select id="insuranceLoanType" class="form-control" required>
+                <option value="Comprehensive">Comprehensive (Full Package Cover)</option>
+                <option value="Zero Depreciation">Zero Depreciation (Bumper to Bumper)</option>
+                <option value="Third Party">Third Party Only (TP)</option>
+                <option value="Own Damage">Own Damage Only (OD)</option>
+                <option value="New Car Insurance">New Car Insurance</option>
+                <option value="Used Car Insurance">Used Car Insurance</option>
+                <option value="Refinance Insurance">Refinance Insurance</option>
+              </select>
+            </div>
+
+            <!-- 5. Reference Given By (Full row width inside grid) -->
+            <div class="form-group form-group-full">
+              <label for="insuranceReferenceBy" class="form-label">
+                5. Reference Given By
+              </label>
+              <input type="text" id="insuranceReferenceBy" class="form-control" placeholder="e.g. Karthik (City Motors) / Direct Walk-in / Self">
+              <span class="form-hint">Source or dealer who referred the insurance</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Vehicle Details -->
+        <div class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-icon" style="background:#fef3c7; color:#d97706;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+            </div>
+            <h4 class="form-card-title">2. Vehicle Information</h4>
+            <span class="form-card-subtitle">Insured Asset Details</span>
+          </div>
+
+          <div class="form-grid form-grid-3">
+            <div class="form-group">
+              <label for="insuranceVehicleNumber" class="form-label">6. Vehicle Registration No</label>
+              <input type="text" id="insuranceVehicleNumber" class="form-control uppercase" placeholder="e.g. TN 09 BK 4321 or NEW">
+              <span class="form-hint">Enter NEW if un-registered</span>
+            </div>
+
+            <div class="form-group">
+              <label for="insuranceModel" class="form-label">7. Vehicle Model</label>
+              <input type="text" id="insuranceModel" class="form-control" placeholder="e.g. Maruti Swift, Creta, Thar">
+            </div>
+
+            <div class="form-group">
+              <label for="insuranceVariant" class="form-label">8. Variant / Fuel</label>
+              <input type="text" id="insuranceVariant" class="form-control" placeholder="e.g. VXI DualJet, 1.5 SX AT">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Valuation & Premium -->
+        <div class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-icon" style="background:#dcfce7; color:#15803d;">
+              <span style="font-weight: 800; font-size: 1rem;">₹</span>
+            </div>
+            <h4 class="form-card-title">3. Valuation & Premium Amount</h4>
+            <span class="form-card-subtitle">IDV & Premium Payable</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="insuranceIdvValue" class="form-label">
+                9. IDV Value (₹) <span class="required">*</span>
+              </label>
+              <div class="currency-input-wrapper">
+                <span class="currency-prefix">₹</span>
+                <input type="number" id="insuranceIdvValue" class="form-control pl-prefix" placeholder="e.g. 580000" min="0" step="1000">
+              </div>
+              <div class="amount-chips">
+                <span class="chip" data-target="insuranceIdvValue" data-amt="300000">3 Lakh</span>
+                <span class="chip" data-target="insuranceIdvValue" data-amt="500000">5 Lakh</span>
+                <span class="chip" data-target="insuranceIdvValue" data-amt="800000">8 Lakh</span>
+                <span class="chip" data-target="insuranceIdvValue" data-amt="1000000">10 Lakh</span>
+                <span class="chip" data-target="insuranceIdvValue" data-amt="1500000">15 Lakh</span>
+              </div>
+              <span class="form-hint">Insured Declared Value (IDV) of vehicle</span>
+            </div>
+
+            <div class="form-group">
+              <label for="insurancePremiumAmount" class="form-label">
+                10. Premium Amount (₹) <span class="required">*</span>
+              </label>
+              <div class="currency-input-wrapper">
+                <span class="currency-prefix">₹</span>
+                <input type="number" id="insurancePremiumAmount" class="form-control pl-prefix" placeholder="e.g. 14200" min="0" step="100">
+              </div>
+              <div class="amount-chips">
+                <span class="chip" data-target="insurancePremiumAmount" data-amt="8500">₹8.5K</span>
+                <span class="chip" data-target="insurancePremiumAmount" data-amt="14000">₹14K</span>
+                <span class="chip" data-target="insurancePremiumAmount" data-amt="22000">₹22K</span>
+                <span class="chip" data-target="insurancePremiumAmount" data-amt="28000">₹28K</span>
+                <span class="chip" data-target="insurancePremiumAmount" data-amt="35000">₹35K</span>
+              </div>
+              <span class="form-hint">Total policy premium collected</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Insurance Period & Expiry Alert -->
+        <div class="form-card" style="border-left: 4px solid #dc2626;">
+          <div class="form-card-header">
+            <div class="form-card-icon" style="background:#fee2e2; color:#dc2626;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+            <h4 class="form-card-title">4. Insurance Validity Period & Expiry Alert</h4>
+            <span class="form-card-subtitle" style="color: #dc2626; font-weight: 700;">⚠️ 0 to 10 Days Warning Alert</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="insuranceFromDate" class="form-label">
+                11. Insurance From Date (Start Date) <span class="required">*</span>
+              </label>
+              <input type="date" id="insuranceFromDate" class="form-control" required>
+              <span class="form-hint">Policy inception date</span>
+            </div>
+
+            <div class="form-group">
+              <label for="insuranceToDate" class="form-label">
+                12. Insurance Expiry Date (To Date) <span class="required">*</span>
+              </label>
+              <input type="date" id="insuranceToDate" class="form-control" required>
+              <span class="form-hint">Renewal date (Triggers red alert 10 days before)</span>
+              <span class="form-error hidden" id="errInsuranceToDate">Expiry date is required</span>
+            </div>
+          </div>
+
+          <!-- Live Expiry Alert Preview in Form -->
+          <div id="insuranceFormExpiryPreview" class="expiry-preview-banner hidden">
+            <!-- Dynamically populated in JS -->
+          </div>
+        </div>
+
+        <!-- Card 5: Insurance Company & Policy Credentials -->
+        <div class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-icon" style="background:#ede9fe; color:#7c3aed;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </div>
+            <h4 class="form-card-title">5. Insurance Company & Policy Credentials</h4>
+            <span class="form-card-subtitle">Insurer Details & Follow-up</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="insuranceCompany" class="form-label">
+                13. Insurance Company Name <span class="required">*</span>
+              </label>
+              <input list="insuranceCompanyOptions" id="insuranceCompany" class="form-control" placeholder="Type or select insurance company" required>
+              <datalist id="insuranceCompanyOptions">
+                <option value="HDFC ERGO General Insurance">
+                <option value="ICICI Lombard General Insurance">
+                <option value="Tata AIG General Insurance">
+                <option value="Bajaj Allianz General Insurance">
+                <option value="GoDigit General Insurance">
+                <option value="United India Insurance">
+                <option value="The New India Assurance">
+                <option value="National Insurance Company">
+                <option value="The Oriental Insurance">
+                <option value="Royal Sundaram General Insurance">
+                <option value="Cholamandalam MS General Insurance">
+                <option value="Reliance General Insurance">
+                <option value="SBI General Insurance">
+                <option value="Kotak Mahindra General Insurance">
+              </datalist>
+              <span class="form-hint">Insurance provider issuing the cover</span>
+              <span class="form-error hidden" id="errInsuranceCompany">Insurance company is required</span>
+            </div>
+
+            <div class="form-group">
+              <label for="insurancePolicyNumber" class="form-label">
+                14. Policy / Cover Note No
+              </label>
+              <input type="text" id="insurancePolicyNumber" class="form-control font-mono" placeholder="e.g. ICICI-MOT-88910">
+              <span class="form-hint">Leave blank if pending cover note number</span>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label for="insuranceStatus" class="form-label">
+                15. Policy Status
+              </label>
+              <select id="insuranceStatus" class="form-control">
+                <option value="Active">Active (Coverage Running)</option>
+                <option value="Expiring Soon">Expiring Soon (≤ 10 Days)</option>
+                <option value="Expired">Expired (Break-in Required)</option>
+                <option value="Renewed">Renewed (Policy Extended)</option>
+              </select>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label for="insuranceNotes" class="form-label">
+                16. Notes / Renewal Follow-up Remarks
+              </label>
+              <textarea id="insuranceNotes" class="form-control" rows="2" placeholder="e.g. Customer will pay by Saturday on Google Pay. Send WhatsApp quote with zero dep NCB retention."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnCancelInsuranceForm">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveInsurance" style="background-color: #16a34a; border-color: #15803d; min-width: 190px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            <span id="saveInsuranceBtnText">Save Insurance Policy</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- VIEW INSURANCE POLICY MODAL                    -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="viewInsuranceModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span class="view-header-badge" id="viewInsuranceTypeBadge">Comprehensive</span>
+            <span class="view-header-badge" id="viewInsuranceStatusBadge" style="background:#fee2e2; color:#b91c1c;">Expiring Soon</span>
+          </div>
+          <h3 class="modal-title" id="viewInsuranceCustomerName">Customer Name</h3>
+          <p class="modal-subtitle">
+            Sl. No: <strong id="viewInsuranceSerialNo">1</strong> &bull; 
+            Policy No: <strong class="font-mono text-primary" id="viewInsurancePolicyNo">-</strong>
+          </p>
+        </div>
+        <button class="modal-close" id="btnCloseViewInsuranceModal">&times;</button>
+      </div>
+
+      <!-- Quick Action Bar -->
+      <div class="quick-actions-bar">
+        <a id="btnInsWhatsApp" href="#" class="btn-action btn-whatsapp" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+          </svg>
+          Send WhatsApp Reminder
+        </a>
+
+        <a id="btnInsCall" href="#" class="btn-action btn-call" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+          Call Customer
+        </a>
+
+        <button id="btnEditFromInsuranceView" class="btn-action btn-edit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          Edit / Re-entry
+        </button>
+
+        <button id="btnPrintInsuranceSlip" class="btn-action btn-print">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print Slip
+        </button>
+
+        <button id="btnDeleteFromInsuranceView" class="btn-action" style="background:#fef2f2; color:#dc2626; border-color:#fecaca; margin-left: auto;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          Delete
+        </button>
+      </div>
+
+      <!-- Prominent Expiry Alert Hero Box inside View Modal -->
+      <div id="viewInsuranceAlertBanner" class="insurance-hero-alert hidden">
+        <!-- Rendered dynamically in JS -->
+      </div>
+
+      <!-- 2-Column Info Grid matching the Vehicle Loan CRM design -->
+      <div class="view-grid">
+        <!-- Customer & Reference Section -->
+        <div class="view-section">
+          <h4 class="view-section-title">Customer Information</h4>
+          <div class="detail-item">
+            <span class="detail-label">Customer Name:</span>
+            <span class="detail-value" id="viewInsCustName">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mobile Number:</span>
+            <span class="detail-value font-mono font-semibold" id="viewInsMobile">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Reference Given By:</span>
+            <span class="detail-value" id="viewInsReference">-</span>
+          </div>
+        </div>
+
+        <!-- Vehicle Details Section -->
+        <div class="view-section">
+          <h4 class="view-section-title">Vehicle Details</h4>
+          <div class="detail-item">
+            <span class="detail-label">Vehicle Registration No:</span>
+            <span class="detail-value font-mono font-semibold uppercase text-primary" id="viewInsVehNo">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Vehicle Model:</span>
+            <span class="detail-value" id="viewInsModel">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Variant:</span>
+            <span class="detail-value" id="viewInsVariant">-</span>
+          </div>
+        </div>
+
+        <!-- Valuation & Premium Summary -->
+        <div class="view-section">
+          <h4 class="view-section-title">Valuation & Premium</h4>
+          <div class="detail-item">
+            <span class="detail-label">IDV Value (Insured Declared):</span>
+            <span class="detail-value font-semibold" id="viewInsIdv">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Premium Amount:</span>
+            <span class="detail-value highlight-amount" id="viewInsPremium">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Policy / Loan Type:</span>
+            <span class="detail-value" id="viewInsLoanType">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Policy Status:</span>
+            <span class="detail-value" id="viewInsStatus">-</span>
+          </div>
+        </div>
+
+        <!-- Coverage & Validity Period -->
+        <div class="view-section">
+          <h4 class="view-section-title">Coverage & Validity</h4>
+          <div class="detail-item">
+            <span class="detail-label">Insurance Company:</span>
+            <span class="detail-value font-semibold" id="viewInsCompany">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Policy / Cover Note No:</span>
+            <span class="detail-value font-mono" id="viewInsPolicyNumber">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Valid From Date:</span>
+            <span class="detail-value" id="viewInsFromDate">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Expiry Date (To Date):</span>
+            <span class="detail-value font-semibold" id="viewInsToDate">-</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Days Left:</span>
+            <span class="detail-value font-bold" id="viewInsDaysLeft">-</span>
+          </div>
+        </div>
+
+        <!-- Renewal Notes Card (Full Width) -->
+        <div class="view-section view-section-full">
+          <h4 class="view-section-title">Renewal Notes & Remarks</h4>
+          <div class="detail-notes" id="viewInsNotes">No renewal notes recorded.</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnCloseViewInsuranceBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- INSURANCE DOWNLOAD & EXPORT MODAL              -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop hidden" id="insuranceDownloadModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Download Insurance Reports</h3>
+          <p class="modal-subtitle">Export insurance policies directory in CSV / Excel or printable PDF format</p>
+        </div>
+        <button class="modal-close" id="btnCloseInsuranceDownloadModal">&times;</button>
+      </div>
+
+      <div class="export-modal-body">
+        <!-- 1. Status Selection -->
+        <div class="form-group mb-4">
+          <label class="form-label font-semibold">1. Filter by Policy Status</label>
+          <div class="pill-selector-grid" id="exportInsStatusOptions">
+            <button type="button" class="pill-option active" data-val="All">All Policies</button>
+            <button type="button" class="pill-option pill-urgent-alert" data-val="Expiring Soon">⚠️ Expiring Soon (≤ 10 Days)</button>
+            <button type="button" class="pill-option" data-val="Active">Active</button>
+            <button type="button" class="pill-option" data-val="Expired">Expired</button>
+            <button type="button" class="pill-option" data-val="Renewed">Renewed</button>
+          </div>
+        </div>
+
+        <!-- 2. Policy Type Selection -->
+        <div class="form-group mb-4">
+          <label class="form-label font-semibold">2. Filter by Policy / Loan Type</label>
+          <div class="pill-selector-grid" id="exportInsTypeOptions">
+            <button type="button" class="pill-option active" data-val="All">All Types</button>
+            <button type="button" class="pill-option" data-val="Comprehensive">Comprehensive</button>
+            <button type="button" class="pill-option" data-val="Zero Depreciation">Zero Dep</button>
+            <button type="button" class="pill-option" data-val="Third Party">Third Party</button>
+            <button type="button" class="pill-option" data-val="Own Damage">Own Damage</button>
+          </div>
+        </div>
+
+        <!-- 3. Month-Wise Report By Expiry Date -->
+        <div class="form-group mb-4" style="background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-sm); padding: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <label for="exportInsExpiryMonth" class="form-label font-semibold" style="color: #b91c1c; margin: 0;">
+              📅 3. Month-Wise Report (by Expiry Date)
+            </label>
+            <div style="display: flex; gap: 0.35rem;">
+              <button type="button" class="btn btn-outline btn-sm" id="btnExportInsThisMonth" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #fff; border-color: #fca5a5; color: #b91c1c; font-weight: 600;">This Month</button>
+              <button type="button" class="btn btn-outline btn-sm" id="btnExportInsNextMonth" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #fff; border-color: #fca5a5; color: #b91c1c; font-weight: 600;">Next Month</button>
+              <button type="button" class="btn btn-outline btn-sm" id="btnExportInsAllMonths" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #fff; border-color: #cbd5e1; color: var(--slate-600); font-weight: 600;">All Months</button>
+            </div>
+          </div>
+          <input type="month" id="exportInsExpiryMonth" class="form-control" style="background: #ffffff; border-color: #fca5a5;">
+          <span class="form-hint" style="color: #dc2626; font-weight: 500;">
+            ✓ Easily filter policies expiring in a specific month for proactive customer renewal calls.
+          </span>
+        </div>
+
+        <!-- 4. Insurance Company Selection -->
+        <div class="form-group mb-4">
+          <label for="exportInsCompanySelect" class="form-label font-semibold">4. Insurance Company (Optional)</label>
+          <select id="exportInsCompanySelect" class="form-control">
+            <option value="All">All Insurance Companies</option>
+          </select>
+        </div>
+
+        <!-- Live Preview Card -->
+        <div class="export-preview-card">
+          <div class="preview-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span class="font-semibold">Insurance Export Summary Preview</span>
+          </div>
+
+          <div class="preview-stats">
+            <div>
+              <span class="text-muted">Matching Policies:</span>
+              <strong id="exportInsMatchCount" class="preview-number">0</strong>
+            </div>
+            <div>
+              <span class="text-muted">Total Premium:</span>
+              <strong id="exportInsMatchPremium" class="preview-number text-primary" style="color: #16a34a !important;">₹0</strong>
+            </div>
+          </div>
+
+          <div class="preview-filename">
+            <span class="text-muted">Filename:</span>
+            <code id="exportInsPreviewFilename">SD_Associates_Insurance.csv</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer justify-between">
+        <button type="button" class="btn btn-secondary" id="btnCancelInsuranceDownload">Cancel</button>
+        <div class="footer-actions">
+          <button type="button" class="btn btn-secondary" id="btnExecuteInsuranceDownload">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CSV / Excel
+          </button>
+          <button type="button" class="btn btn-primary" id="btnExecuteInsuranceDownloadPdf" style="background-color: #dc2626; border-color: #b91c1c;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Download in PDF (Table Format)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
