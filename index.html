@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>SD Associates - Vehicle Finance & Loan CRM</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -214,6 +214,9 @@
           <span class="count-badge" id="leadsCountBadge">0 leads</span>
         </div>
         <div class="table-actions">
+          <button id="btnToggleMobileLeadView" class="btn btn-outline btn-sm mobile-view-toggle" type="button" title="Switch between Card and Table view on mobile">
+            📋 Table View
+          </button>
           <button id="btnQuickDownloadFiltered" class="btn btn-outline btn-sm" title="Download currently displayed leads as CSV">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -437,6 +440,9 @@
             <span class="count-badge" id="insuranceCountBadge">0 policies</span>
           </div>
           <div class="table-actions">
+            <button id="btnToggleMobileInsuranceView" class="btn btn-outline btn-sm mobile-view-toggle" type="button" title="Switch between Card and Table view on mobile">
+              📋 Table View
+            </button>
             <button id="btnQuickDownloadInsuranceFiltered" class="btn btn-outline btn-sm" title="Download currently displayed insurance policies as CSV">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>

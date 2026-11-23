@@ -471,10 +471,10 @@ function renderTable() {
     const disbAmt = isDisbursed ? (Number(lead.disbursed_amount) || Number(lead.loan_amount) || 0) : 0;
 
     tr.innerHTML = `
-      <td>
-        <span class="table-serial">${escapeHtml(lead.serial_no)}</span>
+      <td class="col-serial" data-label="Sl. No">
+        <span class="table-serial">#${escapeHtml(lead.serial_no)}</span>
       </td>
-      <td>
+      <td class="col-customer" data-label="Customer">
         <div class="table-customer-name">${escapeHtml(lead.customer_name)}</div>
         <div class="table-customer-phone">
           <span>${escapeHtml(lead.mobile_number)}</span>
@@ -492,39 +492,39 @@ function renderTable() {
           ` : ''}
         </div>
       </td>
-      <td>
+      <td class="col-loan-type" data-label="Loan Type">
         <span class="${getLoanTypeBadgeClass(lead.loan_type)}">${escapeHtml(lead.loan_type)}</span>
       </td>
-      <td>
+      <td class="col-loan-amount" data-label="Loan Amount">
         <div class="amount-text">${formatCurrency(lead.loan_amount)}</div>
       </td>
-      <td>
+      <td class="col-vehicle" data-label="Vehicle & Model">
         <div class="table-vehicle-model">${escapeHtml(lead.model || '-')} ${lead.variant ? `<span class="table-vehicle-sub">(${escapeHtml(lead.variant)})</span>` : ''}</div>
         <div class="table-vehicle-sub font-mono">${escapeHtml(lead.vehicle_number || 'New')}</div>
       </td>
-      <td>
+      <td class="col-reference" data-label="Ref By">
         <span>${escapeHtml(lead.reference_by || '-')}</span>
       </td>
-      <td>
+      <td class="col-finance" data-label="Finance Company">
         <span class="table-finance">${escapeHtml(lead.finance_name || '-')}</span>
       </td>
-      <td>
+      <td class="col-login-date" data-label="Login Date">
         <span>${formatDate(lead.login_date)}</span>
       </td>
-      <td>
+      <td class="col-disbursed-amt ${isDisbursed ? 'is-disbursed' : 'not-disbursed'}" data-label="Disbursed Amt">
         <div class="amount-text" style="color: ${isDisbursed ? '#15803d' : '#94a3b8'};">
           ${isDisbursed ? formatCurrency(disbAmt) : '-'}
         </div>
       </td>
-      <td>
+      <td class="col-disbursed-date ${isDisbursed ? 'is-disbursed' : 'not-disbursed'}" data-label="Disbursed Date">
         <span style="font-size: 0.8rem; color: ${isDisbursed ? '#1e293b' : '#94a3b8'};">
           ${isDisbursed && lead.disbursed_date ? formatDate(lead.disbursed_date) : '-'}
         </span>
       </td>
-      <td>
+      <td class="col-status" data-label="Status">
         <span class="${getStatusBadgeClass(lead.status)}">${escapeHtml(lead.status)}</span>
       </td>
-      <td class="text-right">
+      <td class="col-actions text-right" data-label="Actions">
         <div class="table-row-actions">
           <button class="btn-table-action btn-view-lead" data-id="${lead.id}" title="View Details">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -864,6 +864,31 @@ function setupEventListeners() {
   elements.btnCancelForm.addEventListener('click', closeModals);
   elements.btnCloseViewModal.addEventListener('click', closeModals);
   elements.btnCloseViewBottom.addEventListener('click', closeModals);
+
+  // Mobile View Mode Toggle (Cards vs Table)
+  const btnToggleLeadView = document.getElementById('btnToggleMobileLeadView');
+  if (btnToggleLeadView) {
+    btnToggleLeadView.addEventListener('click', () => {
+      const card = btnToggleLeadView.closest('.table-card');
+      if (card) {
+        card.classList.toggle('force-table-view');
+        const isTable = card.classList.contains('force-table-view');
+        btnToggleLeadView.innerHTML = isTable ? '📱 Cards View' : '📋 Table View';
+      }
+    });
+  }
+
+  const btnToggleInsuranceView = document.getElementById('btnToggleMobileInsuranceView');
+  if (btnToggleInsuranceView) {
+    btnToggleInsuranceView.addEventListener('click', () => {
+      const card = btnToggleInsuranceView.closest('.table-card');
+      if (card) {
+        card.classList.toggle('force-table-view');
+        const isTable = card.classList.contains('force-table-view');
+        btnToggleInsuranceView.innerHTML = isTable ? '📱 Cards View' : '📋 Table View';
+      }
+    });
+  }
 
   // Auto Serial
   elements.btnAutoSerial.addEventListener('click', async () => {
@@ -1876,8 +1901,8 @@ function renderInsuranceTable() {
 
     return `
       <tr class="${rowClass}" data-id="${p.id}">
-        <td style="text-align: center; font-weight: 700; color: #475569;">${p.serial_no}</td>
-        <td>
+        <td class="col-serial" data-label="Sl. No" style="text-align: center; font-weight: 700; color: #475569;">#${p.serial_no}</td>
+        <td class="col-customer" data-label="Customer">
           <div class="customer-cell">
             <span class="customer-name">${escapeHtml(p.customer_name)}</span>
             <div class="customer-meta" style="display: flex; align-items: center; gap: 0.35rem; margin-top: 2px;">
@@ -1889,37 +1914,37 @@ function renderInsuranceTable() {
             </div>
           </div>
         </td>
-        <td>
+        <td class="col-loan-type" data-label="Policy Type">
           <span class="badge badge-loan-type">${escapeHtml(p.loan_type)}</span>
         </td>
-        <td>
+        <td class="col-vehicle" data-label="Vehicle Details">
           <div class="vehicle-cell">
             <span class="vehicle-model">${escapeHtml(p.model || '-')} ${p.variant ? `<small class="text-muted">(${escapeHtml(p.variant)})</small>` : ''}</span>
-            <span class="vehicle-plate">${escapeHtml(p.vehicle_number || 'New / Unregistered')}</span>
+            <span class="vehicle-plate font-mono">${escapeHtml(p.vehicle_number || 'New / Unregistered')}</span>
           </div>
         </td>
-        <td style="text-align: right; font-weight: 600;">
+        <td class="col-idv" data-label="IDV Value" style="text-align: right; font-weight: 600;">
           ${formatCurrency(p.idv_value)}
         </td>
-        <td style="text-align: right; font-weight: 700; color: #2563eb;">
+        <td class="col-premium" data-label="Premium Amount" style="text-align: right; font-weight: 700; color: #2563eb;">
           ${formatCurrency(p.premium_amount)}
         </td>
-        <td>
+        <td class="col-period" data-label="Policy Period">
           <div style="font-size: 0.8rem;">
             <span class="text-muted">From:</span> ${formatDate(p.from_date)}<br>
             <span class="text-muted">To:</span> <strong style="${isExpiringSoon || isExpired ? 'color: #dc2626;' : ''}">${formatDate(p.to_date)}</strong>
           </div>
         </td>
-        <td style="text-align: center;">
+        <td class="col-expiry" data-label="Expiry Alert" style="text-align: center;">
           ${alertBadgeHtml}
         </td>
-        <td>
+        <td class="col-company" data-label="Insurance Company">
           <div>
             <strong>${escapeHtml(p.insurance_company)}</strong>
-            ${p.policy_number ? `<br><small class="text-muted">${escapeHtml(p.policy_number)}</small>` : ''}
+            ${p.policy_number ? `<br><small class="text-muted font-mono">${escapeHtml(p.policy_number)}</small>` : ''}
           </div>
         </td>
-        <td class="text-right">
+        <td class="col-actions text-right" data-label="Actions">
           <div class="action-buttons-cell">
             <button class="btn-action btn-view" title="View Full Policy Details" onclick="openViewInsuranceModal(${p.id})">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
